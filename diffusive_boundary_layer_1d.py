@@ -18,9 +18,9 @@ folder can be used to merge distributed analysis sets from parallel runs,
 and the `plot_2d_series.py` script can be used to plot the snapshots.
 
 To run, merge, and plot using 4 processes, for instance, you could use:
-    $ mpiexec -n 4 python3 diffusive_boundary_layers_1d.py
+    $ mpiexec -n 4 python3 diffusive_boundary_layer_1d.py
     $ mpiexec -n 4 python3 merge.py snapshots
-    $ mpiexec -n 4 python3 diffusive_boundary_layers_1d.py snapshots/*.h5
+    $ mpiexec -n 4 python3 diffusive_boundary_layer_1d.py snapshots/*.h5
 
 The simulation should take a few process-minutes to run.
 
