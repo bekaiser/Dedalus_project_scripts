@@ -9,6 +9,8 @@ nonlinear governing equations in this script. The coordinates are rotated
 such that x is in the cross slope direction (tangential to the slope) and
 z is slope-normal.
 
+To download the Dedalus PDE solver go to: www.dedalus-project.org
+
 This script uses a Fourier basis in the x direction with periodic boundary
 conditions.  The equations are scaled in units of the buoyancy time (Fr = 1).
 
