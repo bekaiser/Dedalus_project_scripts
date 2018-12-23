@@ -1,6 +1,6 @@
 # quick plots and quick stats of simulation output
 # Bryan Kaiser
-# 12/7/18
+# 12/23/18
 
 # make it open the previous stat files and plot all!
 
@@ -96,6 +96,8 @@ Va = np.zeros([Nx,Ny,Nt])
 Wa = np.zeros([Nx,Ny,Nt])
 Ba = np.zeros([Nx,Ny,Nt])
 
+uzm = np.zeros([Nz,Nt])
+
 """
 for n in range(Nt0,Nt0+Nt):
   filename = snap_path + 'snapshots_s%i.h5' %(n)
@@ -112,9 +114,11 @@ for n in range(Nt0,Nt0+Nt):
   #print(np.shape(np.transpose(f['/tasks/tke1'][:,0,:][0,:])))
 
   u = f['/tasks/u'][:]
+  uz = f['/tasks/uz'][:]
   v = f['/tasks/v'][:] # shape(u) = Nt,Nx,Ny,Nz
   w = f['/tasks/w'][:]
   b = f['/tasks/b'][:]
+  uzm[:,n-Nt0] = np.mean( np.mean( uz[0,:,:,:] , axis=0 ) , axis=0 )
   up =  u[0,:,:,:] - np.mean( np.mean( u[0,:,:,:] , axis=0 ) , axis=0 )
   vp =  v[0,:,:,:] - np.mean( np.mean( v[0,:,:,:] , axis=0 ) , axis=0 ) 
   wp =  w[0,:,:,:] - np.mean( np.mean( w[0,:,:,:] , axis=0 ) , axis=0 )
@@ -223,6 +227,7 @@ dset = f2.create_dataset('Ua', data=Ua, dtype='f8')
 dset = f2.create_dataset('Va', data=Va, dtype='f8')
 dset = f2.create_dataset('Wa', data=Wa, dtype='f8')
 dset = f2.create_dataset('Ba', data=Ba, dtype='f8')
+dset = f2.create_dataset('uzm', data=Ba, dtype='f8')
 
 print('\nTKE budget plotted and stats computed and written to file' + h5_filename + '.\n')
 
