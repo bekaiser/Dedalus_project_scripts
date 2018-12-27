@@ -10,8 +10,6 @@ snap_path = './snapshots/'
 figure_path = './figures/'
 stat_path = './statistics/'
 
-Re = 840
-stokes_flag = 1
 
 import h5py
 import numpy as np
@@ -33,6 +31,14 @@ from scipy.fftpack import fft, fftshift
 import matplotlib.patches as mpatches
 from matplotlib.colors import colorConverter as cc
 
+Pr = 7.
+U0 = 0.01
+T = 44700.
+nu = 2e-6
+omg = 2.*np.pi/T
+Re = np.sqrt(2.*U0**2./(nu*omg))
+
+stokes_flag = 0
 
 # =============================================================================
 # functions
@@ -149,7 +155,7 @@ for m in range(0,Nt-2):
 start_time = int(t[0])
 end_time = int(t[Nt-1])
 
-T = 44700.
+#T = 44700.
 
 plotname = figure_path +'tke_budget_%i_%i.png' %(start_time,end_time)
 plottitle = 'z-integrated y-mean tke budget' 
@@ -178,9 +184,10 @@ plt.xlabel("t/T"); plt.legend(loc=1); plt.ylabel("m^2/s");
 plt.title(plottitle);  
 plt.savefig(plotname,format="png"); plt.close(fig);
 
-nu = 2e-6
-omg = 2.*np.pi/T
-U0 = Re*np.sqrt(nu*omg/2.)
+#nu = 2e-6
+#omg = 2.*np.pi/T
+#U0 = Re*np.sqrt(nu*omg/2.)
+dl = np.sqrt(2.*nu/omg)
 
 tauw = nu*uzm[0,:] # wall shear stress
 ustar = np.amax(np.sqrt(abs(tauw))) # max friction velocity
@@ -188,10 +195,11 @@ utau = np.sqrt(abs(tauw))*(tauw/abs(tauw)) # friction velocity
 dtau = np.sqrt(abs(tauw))/omg # bl thickness
 
 A = 3.
+phi = omg*t
 phi0 = ma.asin(A*ustar/U0)
 
 plotname = figure_path +'tauw_%i_%i.png' %(start_time,end_time)
-plottitle = 'wall shear stress, Re=%.2f' %(Re)
+plottitle = 'wall shear stress, Re=%.2f, Pr=%.1f' %(Re,Pr)
 fig = plt.figure()
 plt.plot(omg*t/(np.pi*2.),tauw/U0**2.,'b',label=r"$\tau_w/U_0^2$");
 plt.xlabel(r"$0.5\phi/\pi$",fontsize=13); 
@@ -200,7 +208,7 @@ plt.title(plottitle);
 plt.savefig(plotname,format="png"); plt.close(fig);
 
 plotname = figure_path +'dtau_%i_%i.png' %(start_time,end_time)
-plottitle = 'boundary layer thickness, Re=%.2f' %(Re)
+plottitle = 'boundary layer thickness, Re=%.2f, Pr=%.1f' %(Re,Pr)
 fig = plt.figure()
 plt.plot(phi/(np.pi*2.),dtau/dl,'b',label=r"$\delta_\tau/\delta_l$");
 plt.xlabel(r"$0.5\phi/\pi$",fontsize=13); 
